@@ -14,8 +14,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+// adding entityframework.
 builder.Services.AddDbContext<MoviesApiContext>(options =>
-options.UseInMemoryDatabase("Movies"));
+options.UseInMemoryDatabase("moviesDB"));
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.Authority = "https://localhost:5005";  // idsvr4
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters { ValidateAudience = false };
+    });
 
 
 var app = builder.Build();
@@ -28,6 +37,9 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -10,23 +10,20 @@ namespace Core.IdentitySvr
 
         public static IEnumerable<Client> Clients =>
             new List<Client> { new Client {
-            ClientId="client",
+            ClientId="movieClient",
             AllowedGrantTypes=GrantTypes.ClientCredentials,
             ClientSecrets= {
                 new Secret("secret".Sha256())
                 },
-             AllowedScopes={ "api"}
+             AllowedScopes={ "movieApi" }
             } };
 
 
         public static IEnumerable<ApiScope> ApiScopes =>
-            new ApiScope[] { };
+            new ApiScope[] { new ApiScope("movieApi", "Movie Api") };
 
         public static IEnumerable<ApiResource> ApiResources =>
-        new List<ApiResource>
-            {
-                new ApiResource{  Name="Api", DisplayName="test api"}
-            };
+        new List<ApiResource>{};
 
 
 

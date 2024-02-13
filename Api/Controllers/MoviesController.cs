@@ -1,4 +1,6 @@
 ﻿using Api.Data;
+using Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +8,7 @@ namespace Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    //[Authorize]
     public class MoviesController : ControllerBase
     {
 
@@ -20,6 +23,17 @@ namespace Api.Controllers
         {
             return Ok(_context.Movies.ToList());
         }
+
+
+        [HttpPost]
+        public IActionResult Add(Movie movie)
+        {
+
+            _context.Movies.Add(movie);
+            _context.SaveChanges();
+            return Ok(movie.MovieId);
+        }
+
 
 
 
