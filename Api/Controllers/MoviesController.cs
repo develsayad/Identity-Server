@@ -8,7 +8,7 @@ namespace Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    //[Authorize]
+    [Authorize("ClientIdPolicy")]
     public class MoviesController : ControllerBase
     {
 
