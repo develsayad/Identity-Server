@@ -1,12 +1,18 @@
 ﻿using Core.Client.ApiServices;
 using Core.Client.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Diagnostics;
 
 namespace Core.Client.Controllers
 {
+
+    [Authorize]
     public class MoviesController : Controller
     {
-        //private readonly MoviesClientContext _context;
+
         private readonly IMovieApiService _movieApiService;
 
 
@@ -17,7 +23,7 @@ namespace Core.Client.Controllers
             _movieApiService = movieApiService;
         }
 
-        // GET: Movies
+
         public async Task<IActionResult> Index()
         {
             //return _context.Movie != null ?
@@ -25,11 +31,22 @@ namespace Core.Client.Controllers
 
             //            Problem("Entity set 'CoreClientContext.Movie'  is null.");
 
-
+            LogTokenAndClaims();
             return View(await _movieApiService.GetAllMovies());
         }
 
-        // GET: Movies/Details/5
+
+        public async Task LogTokenAndClaims()
+        {
+
+            var identityToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken);
+            Debug.WriteLine($"Identity Token:{identityToken}");
+            foreach (var claim in User.Claims)
+            {
+                Debug.WriteLine($"Claim type:{claim.Type} - Claim value:{claim.Value}");
+            }
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
             //if (id == null || _context.Movie == null)
@@ -47,15 +64,13 @@ namespace Core.Client.Controllers
             return View(await _movieApiService.GetMovie(id.Value));
         }
 
-        // GET: Movies/Create
+
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Movies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MovieId,Name,Description,Category,Owner")] Movie movie)
@@ -70,7 +85,7 @@ namespace Core.Client.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Edit/5
+
         public async Task<IActionResult> Edit(int? id)
         {
             var movie = _movieApiService.GetMovie(id.Value);
@@ -87,9 +102,7 @@ namespace Core.Client.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("MovieId,Name,Description,Category,Owner")] Movie movie)
@@ -123,7 +136,7 @@ namespace Core.Client.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Delete/5
+
         public async Task<IActionResult> Delete(int? id)
         {
             var movie = await _movieApiService.GetMovie(id.Value);
@@ -142,7 +155,7 @@ namespace Core.Client.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -161,13 +174,13 @@ namespace Core.Client.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private  bool MovieExists(int id)
+        private bool MovieExists(int id)
         {
             //return (_context.Movie?.Any(e => e.MovieId == id)).GetValueOrDefault();
             //var movie = ;
-            return (_movieApiService.GetMovie(id).Result == null ? false : true); 
+            return (_movieApiService.GetMovie(id).Result == null ? false : true);
 
-            
+
 
 
         }
