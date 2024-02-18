@@ -1,6 +1,8 @@
 ﻿using Core.Client.ApiServices;
 using Core.Client.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -14,7 +16,6 @@ namespace Core.Client.Controllers
     {
 
         private readonly IMovieApiService _movieApiService;
-
 
 
         public MoviesController(IMovieApiService movieApiService)
@@ -36,8 +37,11 @@ namespace Core.Client.Controllers
         }
 
 
+
+
         public async Task LogTokenAndClaims()
         {
+            //if (User.Identity.IsAuthenticated) { }
 
             var identityToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken);
             Debug.WriteLine($"Identity Token:{identityToken}");
@@ -46,6 +50,14 @@ namespace Core.Client.Controllers
                 Debug.WriteLine($"Claim type:{claim.Type} - Claim value:{claim.Value}");
             }
         }
+
+        public async Task Logout()
+        {
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+        }
+
 
         public async Task<IActionResult> Details(int? id)
         {

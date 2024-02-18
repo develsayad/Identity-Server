@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.IdentitySvr", "Core.IdentitySvr\Core.IdentitySvr.csproj", "{86074D40-A35D-4A31-9D3F-F381EC9526B5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Test", "Core.Test\Core.Test.csproj", "{67DBABD5-DBF1-4C97-8E55-F62AF1471B6B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Client", "Core.Client\Core.Client.csproj", "{6F25D0C2-365F-4723-925E-1EA6E14C3038}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Client", "Core.Client\Core.Client.csproj", "{6F25D0C2-365F-4723-925E-1EA6E14C3038}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{86074D40-A35D-4A31-9D3F-F381EC9526B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86074D40-A35D-4A31-9D3F-F381EC9526B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86074D40-A35D-4A31-9D3F-F381EC9526B5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67DBABD5-DBF1-4C97-8E55-F62AF1471B6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67DBABD5-DBF1-4C97-8E55-F62AF1471B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67DBABD5-DBF1-4C97-8E55-F62AF1471B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67DBABD5-DBF1-4C97-8E55-F62AF1471B6B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6F25D0C2-365F-4723-925E-1EA6E14C3038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6F25D0C2-365F-4723-925E-1EA6E14C3038}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F25D0C2-365F-4723-925E-1EA6E14C3038}.Release|Any CPU.ActiveCfg = Release|Any CPU
