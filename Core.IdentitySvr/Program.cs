@@ -1,6 +1,7 @@
 
 
 using Core.IdentitySvr;
+using Core.IdentitySvr.Data;
 using Core.IdentitySvr.Models;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
@@ -16,7 +17,6 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 var migrationsAssembly = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
-const string connectionString = @"Data Source=DESKTOP-APPM9TF;database=IdentityServer4.Quickstart.EntityFramework-4.0.0;trusted_connection=yes;";
 
 //builder.Services.AddIdentity<ApplicationUser,IdentityRole>()
 //    .AddEntityFrameworkStores< ApplicationDbContext>
@@ -24,25 +24,37 @@ const string connectionString = @"Data Source=DESKTOP-APPM9TF;database=IdentityS
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddIdentityServer()
-    .AddTestUsers(Config.TestUsers)
-    .AddConfigurationStore(options => {
-        options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
-               sql => sql.MigrationsAssembly(migrationsAssembly));
-    })
-     .AddOperationalStore(options =>
-     {
-         options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
-             sql => sql.MigrationsAssembly(migrationsAssembly));
-     });
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-//.AddInMemoryClients(Config.Clients)
-//.AddInMemoryIdentityResources(Config.IdentityResources)
-////.AddInMemoryApiResources(Config.ApiResources)
-//.AddInMemoryApiScopes(Config.ApiScopes)
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+             .AddEntityFrameworkStores<ApplicationDbContext>()
+             .AddDefaultTokenProviders();
 
-//.AddDeveloperSigningCredential();
+
+builder.Services.AddIdentityServer(options =>
+{
+    options.Events.RaiseErrorEvents = true;
+    options.Events.RaiseInformationEvents = true;
+    options.Events.RaiseFailureEvents = true;
+    options.Events.RaiseSuccessEvents = true;
+
+    // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
+    options.EmitStaticAudienceClaim = true;
+})
+    //.AddTestUsers(Config.TestUsers)
+    .AddInMemoryClients(Config.Clients)
+.AddInMemoryIdentityResources(Config.IdentityResources)
+//.AddInMemoryApiResources(Config.ApiResources)
+.AddInMemoryApiScopes(Config.ApiScopes)
+.AddAspNetIdentity<ApplicationUser>()
+.AddDeveloperSigningCredential();
+
+
+
+
+
 
 
 
