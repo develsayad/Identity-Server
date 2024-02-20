@@ -21,7 +21,7 @@ builder.Services.AddAuthentication(options =>
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
     {
-        options.Authority = "https://localhost:5005";
+        options.Authority = "https://auth.snih.gov.sa";
         options.ClientId = "movies_mvc_client";
         options.ClientSecret = "secret";
         options.ResponseType = "code";
